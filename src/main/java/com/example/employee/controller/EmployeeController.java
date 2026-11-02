@@ -49,4 +49,8 @@ public class EmployeeController {
     public void deleteAllEmployees() {
         System.out.print("all data not deleted ");
     }
+
+    public void deleteEmployees() {
+        System.out.print("all data not deleted by system ");
+    }
 }

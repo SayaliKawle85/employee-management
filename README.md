@@ -70,10 +70,11 @@ docker run -p 8080:8080 employee-management
 
 ## Jenkins
 
-The `Jenkinsfile` runs: Checkout → Build → Test (publishes JUnit reports) → Package → Docker Build → Deploy.
+The `Jenkinsfile` runs: Checkout → Build → Test (publishes JUnit reports) → Package → Check Docker → Docker Build → Deploy.
+It works on Linux (`sh`) and Windows (`bat`) agents and polls GitHub every 5 minutes for new commits.
 
 Requirements on the Jenkins agent:
-- JDK 17 and Maven configured under **Manage Jenkins → Tools** with the names `jdk17` and `maven3`.
-- Docker installed, and the `jenkins` user allowed to run it.
+- Java 17+ and Maven on the agent's `PATH`.
+- Docker, for the Docker Build and Deploy stages. Without it those stages are skipped.
 
 Create a **Pipeline** job (or Multibranch Pipeline) pointing at the GitHub repository and choose "Pipeline script from SCM".

@@ -1,5 +1,5 @@
 // Runs shell commands on Linux/macOS agents and batch commands on Windows agents
-def run(String cmd) {
+def runCmd(String cmd) {
     if (isUnix()) {
         sh cmd
     } else {
@@ -39,13 +39,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                run 'mvn -B clean compile'
+                runCmd 'mvn -B clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                run 'mvn -B test'
+                runCmd 'mvn -B test'
             }
             post {
                 always {
@@ -56,7 +56,7 @@ pipeline {
 
         stage('Package') {
             steps {
-                run 'mvn -B package -DskipTests'
+                runCmd 'mvn -B package -DskipTests'
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
@@ -78,7 +78,7 @@ pipeline {
         stage('Docker Build') {
             when { expression { dockerAvailable } }
             steps {
-                run "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
+                runCmd "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
             }
         }
 
@@ -92,7 +92,7 @@ pipeline {
                         bat "docker rm -f ${CONTAINER_NAME} || exit /b 0"
                     }
                 }
-                run "docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_NAME}:${IMAGE_TAG}"
+                runCmd "docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_NAME}:${IMAGE_TAG}"
             }
         }
     }

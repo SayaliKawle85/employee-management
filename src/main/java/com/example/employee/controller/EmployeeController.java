@@ -46,9 +46,7 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAllEmployees(@PathVariable Long id) {
-        employeeService.deleteEmployee(id);
-        return ResponseEntity.noContent().build();
+    public void deleteAllEmployees() {
+        System.out.print("all data not deleted ");
     }
 }
